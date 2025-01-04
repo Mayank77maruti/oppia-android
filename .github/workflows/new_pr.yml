@@ -15,7 +15,7 @@ jobs:
       - name: Assign Reviewers and Assignees
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.MY_PAT }}  # Use the PAT here
           script: |
             const { pull_request, repository } = context.payload;
             const owner = repository.owner.login;
@@ -26,9 +26,8 @@ jobs:
             const requestedReviewers = pull_request.requested_reviewers?.map(r => r.login) || [];
             const requestedTeams = pull_request.requested_teams?.map(t => t.slug) || [];
 
-            // Assign reviewers as assignees
+            // Assign reviewers
             if (requestedReviewers.length > 0) {
-              // Assign reviewers
               await github.pulls.requestReviewers({
                 owner,
                 repo,
